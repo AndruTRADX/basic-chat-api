@@ -1,0 +1,16 @@
+{
+  "name": "nodejs-chat",
+  "version": "1.0.0",
+  "description": "Un chat como Telegram pero más melo",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Andrés Rodríguez <“andrudeluxe@gmail.com”>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
