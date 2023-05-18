@@ -60,6 +60,3 @@ Si deseas contribuir a este proyecto, puedes hacerlo de la siguiente manera:
 
 Agradezco cualquier contribución que puedas hacer para mejorar este proyecto.
 
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Puedes consultar el archivo [LICENSE](LICENSE) para obtener más detalles.
