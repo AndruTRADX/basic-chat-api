@@ -1,24 +1,32 @@
-const store = require('./all-messages.controller')
+const service = require('../services/message.service')
 
-const addMessage = (user, message) => {
+const addMessage = (user, message, chat, file) => {
   return new Promise((res, rej) => {
-    if(!user || !message) {
+    if(!user || !message || !chat) {
       rej('Los datos son incorrectos')
-    } else {
-      const fullMsg = {
-        user: user,
-        message: message,
-        date: new Date(),
-      }
-      res(fullMsg)
-      store.add(fullMsg)
+    } 
+    
+    let fileURL = ''
+    if (fileURL) {
+      fileURL = 'http://localhost:3000/app/files/' + file.filename
     }
+    
+    const fullMsg = {
+      user: user,
+      message: message,
+      chat: chat,
+      file: fileURL,
+      date: new Date(),
+    }
+    res(fullMsg)
+    service.add(fullMsg)
+    
   })
 }
 
 const getAllMessages = (filterUser) => {
   return new Promise((res, rej)=> {
-    const messages = store.list(filterUser)
+    const messages = service.list(filterUser)
     if (messages.length === 0) {
       rej('Aún no hay mensajes')
     } else {
@@ -31,7 +39,7 @@ const updateMessage = (id, message) => {
   return new Promise( async (resolve, reject) => {
     if (id && message) {
       try {
-        const data = await store.update(id, message)
+        const data = await service.update(id, message)
         resolve(data)
       } catch (error) {
         reject(error)
@@ -49,7 +57,7 @@ const deleteMessage = (id) => {
     }
 
     try {
-      await store.delete(id);
+      await service.delete(id);
       resolve();
     } catch (error) {
       reject(error);

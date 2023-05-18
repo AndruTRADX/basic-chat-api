@@ -1,8 +1,13 @@
 const express = require('express')
-const router = express.Router()
+const multer = require('multer')
 
+const router = express.Router()
 const response = require('../utils/response')
 const controller = require('../controllers/message.controller')
+
+const upload = multer({
+  dest: '/public/files/',
+})
 
 router.get('/', (req, res) => {
   const filterMessage = req.query.user || null
@@ -12,9 +17,9 @@ router.get('/', (req, res) => {
     .catch((err) => response.error(req, res, err, 404))
 })
 
-router.post('/', (req, res) => {
-  const { user, message } = req.body
-  controller.addMessage(user, message)
+router.post('/', upload.single('file'), (req, res) => {
+  const { user, chat, message } = req.body
+  controller.addMessage(user, message, chat, req.file)
     .then((msg) => response.success(req, res, msg, 201))
     .catch((err) => response.error(req, res, err, 400))
 })

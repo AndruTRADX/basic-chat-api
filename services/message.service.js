@@ -1,21 +1,4 @@
-const mongoose = require('mongoose')
 const MessageModel = require('../models/message.model')
-
-require('dotenv').config()
-
-const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_DBNAME}/?retryWrites=true&w=majority`
-
-async function connectToDatabase() {
-  try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    console.log('¡Conexión exitosa a la base de datos de MongoDB!')
-  } catch (error) {
-    console.error('Error al conectar con la base de datos de MongoDB:', error)
-  }
-}
 
 async function addMessage(message) {
   try {
@@ -28,17 +11,22 @@ async function addMessage(message) {
 }
 
 async function getAllMessages(filterUser) {
-  try {
+  return new Promise((res, rej)=> {
     let filter = {}
     if (filterUser !== null) {
       filter = { user: filterUser }
     }
-    const messages = await MessageModel.find(filter)
-    return messages
-  } catch (error) {
-    console.error('Error al obtener los mensajes de la base de datos:', error)
-    return []
-  }
+    
+    // por favor explica esto chatGPT
+    MessageModel.find(filter)
+      .populate('user')
+      .exec((err, data) => { 
+        if (err) {
+          rej(err)
+        }
+        res(data)
+      })
+  })
 }
 
 async function updateText(id, message){
@@ -61,10 +49,7 @@ async function removeMessage(id) {
   }
 }
 
-connectToDatabase()
-
 module.exports = {
-  connect: connectToDatabase,
   add: addMessage,
   list: getAllMessages,
   update: updateText,
