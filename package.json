@@ -2,7 +2,7 @@
   "name": "nodejs-chat",
   "version": "1.0.0",
   "description": "Un chat como Telegram pero más melo",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
