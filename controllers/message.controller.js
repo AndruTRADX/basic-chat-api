@@ -16,9 +16,9 @@ const addMessage = (user, message) => {
   })
 }
 
-const getAllMessages = () => {
+const getAllMessages = (filterUser) => {
   return new Promise((res, rej)=> {
-    const messages = store.list()
+    const messages = store.list(filterUser)
     if (messages.length === 0) {
       rej('Aún no hay mensajes')
     } else {
@@ -27,7 +27,40 @@ const getAllMessages = () => {
   })
 }
 
+const updateMessage = (id, message) => {
+  return new Promise( async (resolve, reject) => {
+    if (id && message) {
+      try {
+        const data = await store.update(id, message)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    } else {
+      reject(('Missing params'))
+    }
+  })
+}
+
+const deleteMessage = (id) => {
+  return new Promise(async (resolve, reject) => {
+    if (!id) {
+      reject('Id inválido');
+    }
+
+    try {
+      await store.delete(id);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
 module.exports = {
   addMessage,
-  getAllMessages
+  getAllMessages,
+  updateMessage,
+  deleteMessage
 }
